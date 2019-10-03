@@ -1,0 +1,53 @@
+# Refer to https://golang.github.io/dep/docs/Gopkg.toml.html
+# for detailed Gopkg.toml documentation.
+
+[[constraint]]
+  name = "helm.sh/helm"
+  source = "https://github.com/helm/helm.git"
+  version = "v3.0.0-beta.3"
+
+[[constraint]]
+  name = "k8s.io/helm"
+  version = "v2.14.3"
+
+[[override]]
+  name = "k8s.io/kubernetes"
+  version = "v1.15.0"
+
+[[override]]
+  name = "k8s.io/client-go"
+  version = "kubernetes-1.15.0"
+
+[[override]]
+  name = "k8s.io/api"
+  version = "kubernetes-1.15.0"
+
+[[override]]
+  name = "k8s.io/apimachinery"
+  version = "kubernetes-1.15.0"
+
+[[override]]
+  name = "k8s.io/apiserver"
+  version = "kubernetes-1.15.0"
+
+[[override]]
+  name = "k8s.io/cli-runtime"
+  version = "kubernetes-1.15.0"
+
+[[override]]
+  name = "k8s.io/apiextensions-apiserver"
+  version = "kubernetes-1.15.0"
+
+# Fix vendor/k8s.io/kubernetes/pkg/kubectl/cmd/templates/markdown.go:30:5: cannot use ASCIIRenderer literal (type *ASCIIRenderer) as type blackfriday.Renderer in assignment:
+#         *ASCIIRenderer does not implement blackfriday.Renderer (missing RenderFooter method)
+# Fix vendor/k8s.io/kubernetes/pkg/kubectl/cmd/templates/markdown.go:64:11: undefined: blackfriday.LIST_ITEM_BEGINNING_OF_LIST
+# Fix vendor/k8s.io/kubernetes/pkg/kubectl/cmd/templates/markdown.go:71:11: undefined: blackfriday.LIST_TYPE_ORDERED
+# Fix vendor/k8s.io/kubernetes/pkg/kubectl/cmd/templates/normalizers.go:73:35: too many arguments to conversion to blackfriday.Markdown: blackfriday.Markdown(bytes, composite literal, 0)
+[[override]]
+  name = "github.com/russross/blackfriday"
+  version = "v1.5.2"
+
+
+[prune]
+  go-tests = true
+  unused-packages = true
