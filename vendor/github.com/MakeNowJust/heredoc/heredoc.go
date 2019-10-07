@@ -1,31 +1,37 @@
-// Copyright (c) 2014-2017 TSUYUSATO Kitsune
+// Copyright (c) 2014-2019 TSUYUSATO Kitsune
 // This software is released under the MIT License.
 // http://opensource.org/licenses/mit-license.php
 
 // Package heredoc provides creation of here-documents from raw strings.
 //
 // Golang supports raw-string syntax.
+//
 //     doc := `
 //     	Foo
 //     	Bar
 //     `
+//
 // But raw-string cannot recognize indentation. Thus such content is an indented string, equivalent to
+//
 //     "\n\tFoo\n\tBar\n"
+//
 // I dont't want this!
 //
 // However this problem is solved by package heredoc.
+//
 //     doc := heredoc.Doc(`
 //     	Foo
 //     	Bar
 //     `)
+//
 // Is equivalent to
+//
 //     "Foo\nBar\n"
 package heredoc
 
 import (
 	"fmt"
 	"strings"
-	"unicode"
 )
 
 const maxInt = int(^uint(0) >> 1)
@@ -33,7 +39,7 @@ const maxInt = int(^uint(0) >> 1)
 // Doc returns un-indented string as here-document.
 func Doc(raw string) string {
 	skipFirstLine := false
-	if raw[0] == '\n' {
+	if len(raw) > 0 && raw[0] == '\n' {
 		raw = raw[1:]
 	} else {
 		skipFirstLine = true
@@ -47,6 +53,20 @@ func Doc(raw string) string {
 	return strings.Join(lines, "\n")
 }
 
+// isSpace checks whether the rune represents space or not.
+// Only white spcaes (U+0020) and horizontal tabs are treated as space character.
+// It is the same as Go.
+//
+// See https://github.com/MakeNowJust/heredoc/issues/6#issuecomment-524231625.
+func isSpace(r rune) bool {
+	switch r {
+	case ' ', '\t':
+		return true
+	default:
+		return false
+	}
+}
+
 // getMinIndent calculates the minimum indentation in lines, excluding empty lines.
 func getMinIndent(lines []string, skipFirstLine bool) int {
 	minIndentSize := maxInt
@@ -57,9 +77,9 @@ func getMinIndent(lines []string, skipFirstLine bool) int {
 		}
 
 		indentSize := 0
-		for _, r := range []rune(line) {
-			if unicode.IsSpace(r) {
-				indentSize += 1
+		for _, r := range line {
+			if isSpace(r) {
+				indentSize++
 			} else {
 				break
 			}
