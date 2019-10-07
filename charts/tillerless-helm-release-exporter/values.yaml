@@ -5,8 +5,8 @@
 replicaCount: 1
 
 image:
-  repository: tillerless-helm-release-exporter
-  tag: v1.0.1
+  repository: bergerx/tillerless-helm-release-exporter
+  tag: df34775
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
@@ -16,6 +16,36 @@ fullnameOverride: ""
 service:
   type: ClusterIP
   port: 80
+  annotations: {}
+
+metrics:
+  # Enable prometheus native scrape metrics
+  enabled: false
+  # prometheus.io/scrape: "true"
+  # prometheus.io/port: "10254"
+
+serviceMonitor:
+  # Create a ServiceMonitor so prometheus-operator can scrape metrics
+  enabled: false
+  additionalLabels: {}
+  namespace: ""
+  scrapeInterval: 30s
+  # honorLabels: true
+
+rbac:
+  create: true
+
+podSecurityPolicy:
+  enabled: true
+  annotations: {}
+    ## Specify pod annotations
+    ## Ref: https://kubernetes.io/docs/concepts/policy/pod-security-policy/#apparmor
+    ## Ref: https://kubernetes.io/docs/concepts/policy/pod-security-policy/#seccomp
+    ## Ref: https://kubernetes.io/docs/concepts/policy/pod-security-policy/#sysctl
+    ##
+    # seccomp.security.alpha.kubernetes.io/allowedProfileNames: '*'
+    # seccomp.security.alpha.kubernetes.io/defaultProfileName: 'docker/default'
+    # apparmor.security.beta.kubernetes.io/defaultProfileName: 'runtime/default'
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -30,7 +60,22 @@ resources: {}
   #   memory: 128Mi
 
 nodeSelector: {}
-
 tolerations: []
-
 affinity: {}
+
+runAsUser: 1000
+readOnlyRootFilesystem: true
+runAsNonRoot: true
+
+extraArgs: []
+
+serviceAccount:
+  # Specifies whether a ServiceAccount should be created, require rbac true
+  create: true
+  # The name of the ServiceAccount to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name:
+  # Reference to one or more secrets to be used when pulling images
+  # ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+  imagePullSecrets: []
+

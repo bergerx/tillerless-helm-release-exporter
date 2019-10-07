@@ -1,4 +1,10 @@
+tillerless-helm-release-exporter is a simple service that queries the Secrets and ConfigMaps in all namespaces and generates metrics about the helm releases.
+The exposed metrics can be found here:
+https://github.com/bergerx/tillerless-helm-release-exporter/#collected-metrics
+
+The metrics are exported on the HTTP endpoint /metrics on the listening port.
+In your case, {{ template "tillerless-helm-release-exporter.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.service.port }}/metrics
+
 Get the application URL by running these commands:
-  export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "tillerless-helm-release-exporter.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
   echo "Visit http://127.0.0.1:8080 to use your application"
-  kubectl port-forward $POD_NAME 8080:80
+  kubectl port-forward -n {{ .Release.Namespace }} svc/{{ template "tillerless-helm-release-exporter.fullname" . }} 8080:80

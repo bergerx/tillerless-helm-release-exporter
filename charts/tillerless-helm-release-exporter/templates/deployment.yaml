@@ -24,20 +24,32 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          securityContext:
+            readOnlyRootFilesystem: {{ .Values.readOnlyRootFilesystem }}
+            runAsNonRoot: {{ .Values.runAsNonRoot  }}
+            runAsUser: {{ .Values.runAsUser }}
+          args:
+          {{- if .Values.extraArgs }}
+{{ toYaml .Values.extraArgs | indent 12 }}
+          {{- end }}
           ports:
             - name: http
-              containerPort: 80
+              containerPort: 8080
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /
+              path: /healthz
+              periodSeconds: 1
               port: http
           readinessProbe:
             httpGet:
-              path: /
+              path: /healthz
+              periodSeconds: 1
               port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+      serviceAccount: {{ template "tillerless-helm-release-exporter.fullname" . }}
+      serviceAccountName: {{ template "tillerless-helm-release-exporter.fullname" . }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
