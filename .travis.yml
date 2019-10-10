@@ -17,7 +17,7 @@ before_script:
     --build-arg VCS_REF=$TRAVIS_COMMIT
     -t bergerx/tillerless-helm-release-exporter
     .
-- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+- echo "$DOCKER_PASSWORD" | docker login -u "bergerx" --password-stdin
 
 script:
 - if [ "$TRAVIS_BRANCH" == "master" ]; then
