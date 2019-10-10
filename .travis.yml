@@ -1,0 +1,29 @@
+language: minimal
+sudo: required
+
+services:
+- docker
+
+before_script:
+- nvm install lts/*
+- npm install
+    semantic-release
+    @semantic-release/changelog
+    @semantic-release/git
+    @commitlint/cli
+    @commitlint/config-conventional
+- docker build
+    --build-arg BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+    --build-arg VCS_REF=$TRAVIS_COMMIT
+    -t bergerx/tillerless-helm-release-exporter
+    .
+- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
+script:
+- if [ "$TRAVIS_BRANCH" == "master" ]; then
+    npx semantic-release;
+    VERSION=$(git describe --abbrev=0 --tags);
+    docker tag bergerx/tillerless-helm-release-exporter
+      bergerx/tillerless-helm-release-exporter:$VERSION;
+    docker push bergerx/tillerless-helm-release-exporter:$VERSION;
+  fi
