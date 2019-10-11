@@ -4,26 +4,47 @@ sudo: required
 services:
 - docker
 
+branches:
+  only:
+  - master
+
 before_script:
 - nvm install lts/*
 - npm install
     semantic-release
     @semantic-release/changelog
+    @semantic-release/exec
     @semantic-release/git
+    @semantic-release/github
     @commitlint/cli
     @commitlint/config-conventional
+- echo "$DOCKER_PASSWORD" | docker login -u "bergerx" --password-stdin
+
+script:
 - docker build
     --build-arg BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
     --build-arg VCS_REF=$TRAVIS_COMMIT
     -t bergerx/tillerless-helm-release-exporter
-    .
-- echo "$DOCKER_PASSWORD" | docker login -u "bergerx" --password-stdin
-
-script:
-- if [ "$TRAVIS_BRANCH" == "master" ]; then
-    npx semantic-release;
-    VERSION=$(git describe --abbrev=0 --tags);
-    docker tag bergerx/tillerless-helm-release-exporter
-      bergerx/tillerless-helm-release-exporter:$VERSION;
-    docker push bergerx/tillerless-helm-release-exporter:$VERSION;
+- npx semantic-release
+- VERSION=$(git describe --abbrev=0 --tags)
+## Skip if release already exists
+- curl -s https://hub.docker.com/v2/repositories/bergerx/tillerless-helm-release-exporter/tags/?page_size=10000 | jq -r "[.results | .[] | .name == \"$VERSION\"] | any" | grep true && { echo "No new release.."; travis_terminate 0; }
+- docker tag
+    bergerx/tillerless-helm-release-exporter
+    bergerx/tillerless-helm-release-exporter:$VERSION
+- docker push
+    bergerx/tillerless-helm-release-exporter:$VERSION
+## Travis is currently configured to run only on master for now.
+#- git co master
+- rm -rf charts-dup; cp -ar charts charts-dup
+- git co gh-pages
+- >
+  if ! test -f tillerless-helm-release-exporter-$VERSION.tgz; then
+    helm package charts-dup/tillerless-helm-release-exporter/
+    git add tillerless-helm-release-exporter-$VERSION.tgz
+    git commit -m "chore(version): $VERSION"
+    git push origin gh-pages:gh-pages
+  else
+    echo "Helm Chart with version $VERSION already exists, skipped Helm Chart publish step."
   fi
+- git co master
