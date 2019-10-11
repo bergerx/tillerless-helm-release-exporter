@@ -1,6 +1,8 @@
+# Not go, and jus tminimal because the code is compiled in the dirat stage of
+# the multi-stage Dcokerfile.
 language: minimal
-sudo: required
 
+sudo: required
 services:
 - docker
 
@@ -8,7 +10,12 @@ branches:
   only:
   - master
 
+cache:
+  directories: ~/.npm
+
 before_script:
+# Install semantic-release, helm and configure docker hub login to publish
+# image.
 - nvm install lts/*
 - npm install
     semantic-release
@@ -18,33 +25,73 @@ before_script:
     @semantic-release/github
     @commitlint/cli
     @commitlint/config-conventional
+- curl -L https://git.io/get_helm.sh | bash; helm init --client-only
 - echo "$DOCKER_PASSWORD" | docker login -u "bergerx" --password-stdin
 
 script:
+
+# The repo is using a multi-stage Dockerfile, compile happens on the first
+# stage, and there will only be compiled binary file in the final image.
+- echo 'Compile and build docker image ...' && echo -en 'travis_fold:start:build\\r'
 - docker build
     --build-arg BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
     --build-arg VCS_REF=$TRAVIS_COMMIT
     -t bergerx/tillerless-helm-release-exporter
+    .
+- echo -en 'travis_fold:end:build\\r'
+
+# Release new version, semantic-release will decide the next version number,
+# also see .releaserc file for some more details about how semantic-release is
+# configured.
+- echo 'Release new version ...' && echo -en 'travis_fold:start:release\\r'
 - npx semantic-release
-- VERSION=$(git describe --abbrev=0 --tags)
-## Skip if release already exists
-- curl -s https://hub.docker.com/v2/repositories/bergerx/tillerless-helm-release-exporter/tags/?page_size=10000 | jq -r "[.results | .[] | .name == \"$VERSION\"] | any" | grep true && { echo "No new release.."; travis_terminate 0; }
+- VERSION=$(git describe --abbrev=0 --tags); echo $VERSION
+- echo -en 'travis_fold:end:release\\r'
+
+# Publish the Docker image for the release.
+- echo "Publish Docker image with tag $VERSION ..." && echo -en 'travis_fold:start:publish-docker-image\\r'
+# Terminate the rest if there is a docker image with the new version already
+# exists.
+- >
+  if curl -s https://hub.docker.com/v2/repositories/bergerx/tillerless-helm-release-exporter/tags/?page_size=10000 |
+      jq -r "[.results | .[] | .name == \"$VERSION\"] | any" | grep true; then
+    echo "There is already an image with $VERSION tag, terminating Travis job."
+    travis_terminate 0
+  fi
 - docker tag
     bergerx/tillerless-helm-release-exporter
     bergerx/tillerless-helm-release-exporter:$VERSION
 - docker push
     bergerx/tillerless-helm-release-exporter:$VERSION
-## Travis is currently configured to run only on master for now.
+- docker push
+    bergerx/tillerless-helm-release-exporter
+- echo -en 'travis_fold:end:pusblish-docker-image\\r'
+
+# Publish new Helm Chart with new release. Helm Charts versions will be
+# matching the project versions.
+- echo 'Publish Helm Chart with version $VERSION ...' && echo -en 'travis_fold:start:publish-helm-chart\\r'
+# Travis is currently configured to run only on master for now.
 #- git co master
 - rm -rf charts-dup; cp -ar charts charts-dup
-- git co gh-pages
+# There is GITHUB_TOKEN for auth with github, so we explicitly add the HTTPS
+# endpoint as a new remote.
+- git remote add origin-pages https://${GITHUB_TOKEN}@github.com/bergerx/tillerless-helm-release-exporter.git
+- git fetch origin-pages
+- git checkout --track origin-pages/gh-pages
 - >
-  if ! test -f tillerless-helm-release-exporter-$VERSION.tgz; then
+  set -x;
+  CHART_PACKAGE=tillerless-helm-release-exporter-${VERSION//v}.tgz;
+  if ! test -f $CHART_PACKAGE; then
     helm package charts-dup/tillerless-helm-release-exporter/
-    git add tillerless-helm-release-exporter-$VERSION.tgz
-    git commit -m "chore(version): $VERSION"
-    git push origin gh-pages:gh-pages
+    helm repo index .
+    git add index.yaml $CHART_PACKAGE
+    git commit -m "chore(release): $VERSION [skip ci]" -m "Travis build: $TRAVIS_BUILD_WEB_URL"
+    git push origin-pages gh-pages
   else
     echo "Helm Chart with version $VERSION already exists, skipped Helm Chart publish step."
-  fi
-- git co master
+  fi;
+  set +x
+- git checkout master
+- echo -en 'travis_fold:end:pusblish-helm-chart\\r'
+
+- echo 'All Done.'

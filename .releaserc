@@ -8,6 +8,7 @@
     }],
     ["@semantic-release/git", {
       "assets": [ "CHANGELOG.md", "charts/tillerless-helm-release-exporter/Chart.yaml" ]
-    }]
+    }],
+    "@semantic-release/github"
   ]
 }

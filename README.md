@@ -1,5 +1,16 @@
+[![Build Status](https://travis-ci.com/bergerx/tillerless-helm-release-exporter.svg?branch=master)](https://travis-ci.com/bergerx/tillerless-helm-release-exporter) [![](https://images.microbadger.com/badges/image/bergerx/tillerless-helm-release-exporter.svg)](https://microbadger.com/images/bergerx/tillerless-helm-release-exporter "Get your own image badge on microbadger.com")
+
+
 # tillerless-helm-release-exporter
 Helm (both v2 and v3) exporter which collects information directly from [Release](https://helm.sh/docs/glossary/#release)'s ConfigMap or Secret storage backend without the need for a running Tiller component.
+
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/3276/badge)](https://bestpractices.coreinfrastructure.org/projects/3276)
+[![Build Status](https://travis-ci.com/bergerx/tillerless-helm-release-exporter.svg?branch=master)](https://travis-ci.com/bergerx/tillerless-helm-release-exporter)
+[![](https://images.microbadger.com/badges/image/bergerx/tillerless-helm-release-exporter.svg)](https://microbadger.com/images/bergerx/tillerless-helm-release-exporter "Get your own image badge on microbadger.com")
+[![Docker pulls](https://img.shields.io/docker/pulls/bergerx/tillerless-helm-release-exporter.svg)](https://hub.docker.com/r/bergerx/tillerless-helm-release-exporter/)
+[![Known Vulnerabilities](https://snyk.io//test/github/bergerx/tillerless-helm-release-exporter/badge.svg?targetFile=Gopkg.lock)](https://snyk.io//test/github/bergerx/tillerless-helm-release-exporter?targetFile=Gopkg.lock)
+[![Go Report Card](https://goreportcard.com/badge/github.com/bergerx/tillerless-helm-release-exporter)](https://goreportcard.com/report/github.com/bergerx/tillerless-helm-release-exporter)
 
 Collects metrics for Releases:
 * deployed with Helm v2 with Tiller,
