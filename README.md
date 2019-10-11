@@ -1,6 +1,14 @@
 # tillerless-helm-release-exporter
-Helm exporter which collects information directly from ConfigMap or Secret storage backend without tiller.
+Helm (both v2 and v3) exporter which collects information directly from [Release](https://helm.sh/docs/glossary/#release)'s ConfigMap or Secret storage backend without the need for a running Tiller component.
 
+Collects metrics for Releases:
+* deployed with Helm v2 with Tiller,
+* in all Namespaces in the Kubernetes cluster indepdendently from where the Tiller is running,
+* deployed with Helm v2 without in-cluster Tiller (e.g. [Tillerless Helm](https://github.com/rimusz/helm-tiller)),
+* deployed Helm v3
+
+Doesn't collect metrics for Releases:
+* deployed with `helm template ... | kubectl apply -f -` (e.g. [Istio Install with Helm, Option 1](https://istio.io/docs/setup/install/helm/#option-1-install-with-helm-via-helm-template)). Since these are not really a [Helm Release](https://helm.sh/docs/glossary/#release), they are not stored in either ConfigMap or a Secret backend.
 
 # Collected metrics
 | Metric name| Metric type | Value |
@@ -32,9 +40,10 @@ helm_release_info{chart="prometheus-9.1.1",chart_name="prometheus",chart_version
 
 # Why a new exporter
 * Supports both Helm 2 and Helm 3 releases,
-* Works without a tiller (e.g. works even when you are using `helm tiller` plugin, aka tillerless-helm),
-* Exports both chart and release name and versions,
-* Release versions as the metric's value, so you can annotate release dates in grafana
+* Works without a Tiller (e.g. works even when you used `helm tiller` plugin, aka tillerless-helm),
+* No need to deal with Tiller tls certs,
+* Exports both chart and release name and versions in resulting metrics, chart version is significant to see the effective version, release version is actually a signal to annotate when the last Helm deployment is done,
+* Release versions as the metric's value, so you can annotate release dates in grafana.
 
 # Alternatives
 * https://github.com/sstarcher/helm-exporter
