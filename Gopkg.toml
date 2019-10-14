@@ -2,13 +2,13 @@
 # for detailed Gopkg.toml documentation.
 
 [[constraint]]
-  name = "helm.sh/helm"
+  name = "helm.sh/helm/v3"
   source = "https://github.com/helm/helm.git"
-  version = "v3.0.0-beta.3"
+  version = "v3.0.0-beta.4"
 
 [[constraint]]
   name = "k8s.io/helm"
-  version = "v2.14.3"
+  version = "v2.15.0-rc.1"
 
 [[override]]
   name = "k8s.io/kubernetes"

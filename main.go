@@ -17,8 +17,8 @@ import (
 	releaseV2 "k8s.io/helm/pkg/proto/hapi/release"
 	driverv2 "k8s.io/helm/pkg/storage/driver"
 
-	releaseV3 "helm.sh/helm/pkg/release"
-	driverv3 "helm.sh/helm/pkg/storage/driver"
+	releaseV3 "helm.sh/helm/v3/pkg/release"
+	driverv3 "helm.sh/helm/v3/pkg/storage/driver"
 )
 
 var (
