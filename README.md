@@ -1,6 +1,3 @@
-[![Build Status](https://travis-ci.com/bergerx/tillerless-helm-release-exporter.svg?branch=master)](https://travis-ci.com/bergerx/tillerless-helm-release-exporter) [![](https://images.microbadger.com/badges/image/bergerx/tillerless-helm-release-exporter.svg)](https://microbadger.com/images/bergerx/tillerless-helm-release-exporter "Get your own image badge on microbadger.com")
-
-
 # tillerless-helm-release-exporter
 Helm (both v2 and v3) exporter which collects information directly from [Release](https://helm.sh/docs/glossary/#release)'s ConfigMap or Secret storage backend without the need for a running Tiller component.
 
