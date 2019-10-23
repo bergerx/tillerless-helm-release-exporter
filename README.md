@@ -6,7 +6,6 @@ Helm (both v2 and v3) exporter which collects information directly from [Release
 [![Build Status](https://travis-ci.com/bergerx/tillerless-helm-release-exporter.svg?branch=master)](https://travis-ci.com/bergerx/tillerless-helm-release-exporter)
 [![](https://images.microbadger.com/badges/image/bergerx/tillerless-helm-release-exporter.svg)](https://microbadger.com/images/bergerx/tillerless-helm-release-exporter "Get your own image badge on microbadger.com")
 [![Docker pulls](https://img.shields.io/docker/pulls/bergerx/tillerless-helm-release-exporter.svg)](https://hub.docker.com/r/bergerx/tillerless-helm-release-exporter/)
-[![Known Vulnerabilities](https://snyk.io//test/github/bergerx/tillerless-helm-release-exporter/badge.svg?targetFile=Gopkg.lock)](https://snyk.io//test/github/bergerx/tillerless-helm-release-exporter?targetFile=Gopkg.lock)
 [![Go Report Card](https://goreportcard.com/badge/github.com/bergerx/tillerless-helm-release-exporter)](https://goreportcard.com/report/github.com/bergerx/tillerless-helm-release-exporter)
 
 Collects metrics for Releases:
