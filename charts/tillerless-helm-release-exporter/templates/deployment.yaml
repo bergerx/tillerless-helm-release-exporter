@@ -48,8 +48,8 @@ spec:
               port: 8080
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-      serviceAccount: {{ template "tillerless-helm-release-exporter.fullname" . }}
-      serviceAccountName: {{ template "tillerless-helm-release-exporter.fullname" . }}
+      serviceAccount: {{ template "tillerless-helm-release-exporter.serviceAccountName" }}
+      serviceAccountName: {{ template "tillerless-helm-release-exporter.serviceAccountName" . }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
