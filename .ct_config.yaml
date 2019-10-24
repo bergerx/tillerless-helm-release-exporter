@@ -1,0 +1,3 @@
+chart-yaml-schema: .chart_schema.yaml
+lint-conf: .lintconf.yaml
+check-version-increment: false
