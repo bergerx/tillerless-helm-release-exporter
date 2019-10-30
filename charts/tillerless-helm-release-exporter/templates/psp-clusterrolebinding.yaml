@@ -14,4 +14,3 @@ subjects:
     name: {{ template "tillerless-helm-release-exporter.fullname" . }}
     namespace: {{ .Release.Namespace }}
 {{- end }}
-

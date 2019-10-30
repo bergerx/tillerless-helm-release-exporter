@@ -1,0 +1,26 @@
+repos:
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v2.4.0
+  hooks:
+  - id: check-yaml
+    exclude: '^charts/|^\.chart_schema.yaml$'
+  - id: end-of-file-fixer
+  - id: trailing-whitespace
+    exclude: '^.github/ISSUE_TEMPLATE/bug_report.md$'
+  - id: check-merge-conflict
+- repo: https://github.com/dnephin/pre-commit-golang
+  rev: v0.3.5
+  hooks:
+  - id: go-fmt
+  - id: go-build
+- repo: https://github.com/syntaqx/git-hooks
+  rev: v0.0.16
+  hooks:
+  - id: go-mod-tidy
+  - id: forbid-binary
+- repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
+  rev: v1.0.0
+  hooks:
+  - id: commitlint
+    stages: [commit-msg]
+    additional_dependencies: ['@commitlint/config-angular']

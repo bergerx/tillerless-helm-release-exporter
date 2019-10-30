@@ -58,7 +58,7 @@ func main() {
 
 	http.HandleFunc("/", redirectHandler)
 	http.HandleFunc("/metrics", metricsHandler)
-	http.HandleFunc("/healthz", func(_ http.ResponseWriter, _ *http.Request){})
+	http.HandleFunc("/healthz", func(_ http.ResponseWriter, _ *http.Request) {})
 
 	_, err := kube.New(nil).KubernetesClientSet()
 	if err != nil {
@@ -164,4 +164,3 @@ func addDriverV3Values(wg *sync.WaitGroup, d driverv3.Driver, namespace string) 
 			r.Namespace, r.Name, status.String(), "v3").Set(float64(r.Version))
 	}
 }
-
