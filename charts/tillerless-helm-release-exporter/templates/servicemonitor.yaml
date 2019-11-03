@@ -14,9 +14,16 @@ metadata:
 spec:
   endpoints:
     - port: http
-      interval: {{ .Values.serviceMonitor.scrapeInterval }}
+      interval: {{ .Values.serviceMonitor.interval }}
+      {{- if .Values.serviceMonitor.scrapeTimeout }}
+      scrapeTimeout: {{ .Values.serviceMonitor.scrapeTimeout }}
+      {{- end }}
+      {{- if .Values.serviceMonitor.metricRelabelings }}
+      metricRelabelings:
+{{ toYaml .Values.serviceMonitor.metricRelabelings | indent 8 }}
+      {{- end }}
       {{- if .Values.serviceMonitor.honorLabels }}
-      honorLabels: true
+      honorLabels: {{ .Values.serviceMonitor.honorLabels }}
       {{- end }}
   namespaceSelector:
     matchNames:

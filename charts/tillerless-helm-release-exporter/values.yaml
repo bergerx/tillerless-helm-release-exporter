@@ -1,6 +1,6 @@
-# Default values for tillerless-helm-release-exporter.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
+## Default values for tillerless-helm-release-exporter.
+## This is a YAML-formatted file.
+## Declare variables to be passed into your templates.
 
 replicaCount: 1
 
@@ -17,19 +17,34 @@ service:
   type: ClusterIP
   port: 80
   annotations: {}
+  labels: {}
 
+## metrics adds the prometheus.io annotations to pods, so that the Prometheus Kubernetes SD mechanism
+## as configured in the examples will automatically discover both the pods and the services to query.
+##
+## See https://github.com/prometheus/docs/blob/master/content/docs/operating/configuration.md
+## See https://github.com/prometheus/prometheus/blob/master/documentation/examples/prometheus-kubernetes.yml
 metrics:
   # Enable prometheus native scrape metrics
   enabled: false
-  # prometheus.io/scrape: "true"
-  # prometheus.io/port: "10254"
 
+## Prometheus Service Monitor
+## ref: https://github.com/coreos/prometheus-operator
+##      https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#endpoint
 serviceMonitor:
-  # Create a ServiceMonitor so prometheus-operator can scrape metrics
+  ## If the operator is installed in your cluster, set to true to create a Service Monitor Entry
   enabled: false
+  ## Set the namespace the ServiceMonitor should be deployed
+  # namespace: monitoring
+  ## Set how frequently Prometheus should scrape
+  interval: 30s
+  ## Set timeout for scrape
+  # scrapeTimeout: 10s
+  ## Specify Metric Relabellings to add to the scrape endpoint
+  # metricRelabelings:
+  ## Set labels for the ServiceMonitor, use this to define your scrape label for Prometheus Operator
   additionalLabels: {}
-  namespace: ""
-  scrapeInterval: 30s
+  ## Specify honorLabels parameter to add the scrape endpoint
   # honorLabels: true
 
 rbac:
@@ -48,10 +63,10 @@ podSecurityPolicy:
     # apparmor.security.beta.kubernetes.io/defaultProfileName: 'runtime/default'
 
 resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  ## We usually recommend not to specify default resources and to leave this as a conscious
+  ## choice for the user. This also increases chances charts run on environments with little
+  ## resources, such as Minikube. If you do want to specify resources, uncomment the following
+  ## lines, adjust them as necessary, and remove the curly braces after 'resources:'.
   # limits:
   #   cpu: 100m
   #   memory: 128Mi
@@ -70,11 +85,11 @@ runAsNonRoot: true
 extraArgs: []
 
 serviceAccount:
-  # Specifies whether a ServiceAccount should be created, require rbac true
+  ## Specifies whether a ServiceAccount should be created, require rbac true
   create: true
-  # The name of the ServiceAccount to use.
-  # If not set and create is true, a name is generated using the fullname template
+  ## The name of the ServiceAccount to use.
+  ## If not set and create is true, a name is generated using the fullname template
   name:
-  # Reference to one or more secrets to be used when pulling images
-  # ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+  ## Reference to one or more secrets to be used when pulling images
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
   imagePullSecrets: []
