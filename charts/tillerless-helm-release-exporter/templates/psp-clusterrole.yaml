@@ -6,9 +6,9 @@ metadata:
   labels:
 {{ include "tillerless-helm-release-exporter.labels" . | indent 4 }}
 rules:
-- apiGroups: ['extensions']
-  resources: ['podsecuritypolicies']
-  verbs:     ['use']
-  resourceNames:
-  - {{ template "tillerless-helm-release-exporter.fullname" . }}
+  - apiGroups: ['extensions']
+    resources: ['podsecuritypolicies']
+    verbs:     ['use']
+    resourceNames:
+      - {{ template "tillerless-helm-release-exporter.fullname" . }}
 {{- end -}}
