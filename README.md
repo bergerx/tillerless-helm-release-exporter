@@ -6,6 +6,7 @@ Helm (both v2 and v3) exporter which collects information directly from [Release
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/3276/badge)](https://bestpractices.coreinfrastructure.org/projects/3276)
 [![Build Status](https://travis-ci.com/bergerx/tillerless-helm-release-exporter.svg?branch=master)](https://travis-ci.com/bergerx/tillerless-helm-release-exporter)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fbergerx%2Ftillerless-helm-release-exporter.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fbergerx%2Ftillerless-helm-release-exporter?ref=badge_shield)
 [![](https://images.microbadger.com/badges/image/bergerx/tillerless-helm-release-exporter.svg)](https://microbadger.com/images/bergerx/tillerless-helm-release-exporter "Get your own image badge on microbadger.com")
 [![Docker pulls](https://img.shields.io/docker/pulls/bergerx/tillerless-helm-release-exporter.svg)](https://hub.docker.com/r/bergerx/tillerless-helm-release-exporter/)
 [![Go Report Card](https://goreportcard.com/badge/github.com/bergerx/tillerless-helm-release-exporter)](https://goreportcard.com/report/github.com/bergerx/tillerless-helm-release-exporter)
@@ -79,3 +80,7 @@ helm_release_info{chart="prometheus-9.1.1",chart_name="prometheus",chart_version
 # Alternatives
 * https://github.com/sstarcher/helm-exporter
 * https://github.com/Kubedex/exporter
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fbergerx%2Ftillerless-helm-release-exporter.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fbergerx%2Ftillerless-helm-release-exporter?ref=badge_large)
