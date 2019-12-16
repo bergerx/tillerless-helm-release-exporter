@@ -1,3 +1,5 @@
 chart-yaml-schema: .chart_schema.yaml
 lint-conf: .lintconf.yaml
+# Version management is handled by semantic-release, so we are disabling the
+# version check here. See .releaserc for more details.
 check-version-increment: false

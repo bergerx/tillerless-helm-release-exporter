@@ -38,7 +38,7 @@ serviceMonitor:
   # namespace: monitoring
   ## Set how frequently Prometheus should scrape
   interval: 30s
-  ## Set timeout for scrape
+  ## Set timeout for scrape, it usually takes longer then 10s (default) in big clusters
   # scrapeTimeout: 10s
   ## Specify Metric Relabellings to add to the scrape endpoint
   # metricRelabelings:

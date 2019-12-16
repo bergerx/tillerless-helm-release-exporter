@@ -11,14 +11,14 @@ Helm (both v2 and v3) exporter which collects information directly from [Release
 [![Docker pulls](https://img.shields.io/docker/pulls/bergerx/tillerless-helm-release-exporter.svg)](https://hub.docker.com/r/bergerx/tillerless-helm-release-exporter/)
 [![Go Report Card](https://goreportcard.com/badge/github.com/bergerx/tillerless-helm-release-exporter)](https://goreportcard.com/report/github.com/bergerx/tillerless-helm-release-exporter)
 
-Collects metrics for Releases:
+Collects metrics for Releases which are:
 * deployed with Helm v2 with Tiller,
-* in all Namespaces in the Kubernetes cluster indepdendently from where the Tiller is running,
+* in any Namespaces in the Kubernetes cluster indepdendently from where the Tiller is running,
 * deployed with Helm v2 without in-cluster Tiller (e.g. [Tillerless Helm](https://github.com/rimusz/helm-tiller)),
-* deployed Helm v3
+* deployed with Helm v3
 
-Doesn't collect metrics for Releases:
-* deployed with `helm template ... | kubectl apply -f -` (e.g. [Istio Install with Helm, Option 1](https://istio.io/docs/setup/install/helm/#option-1-install-with-helm-via-helm-template)). Since these are not really a [Helm Release](https://helm.sh/docs/glossary/#release), they are not stored in either ConfigMap or a Secret backend.
+Doesn't collect metrics for Releases which are:
+* deployed with `helm template ... | kubectl apply -f -` (e.g. [Istio Install with Helm, Option 1](https://istio.io/docs/setup/install/helm/#option-1-install-with-helm-via-helm-template)). Since these are not really [Helm Release](https://helm.sh/docs/glossary/#release)s, they are not stored in either ConfigMap or a Secret backend.
 
 # Installing the Chart
 
@@ -38,8 +38,16 @@ helm install bergerx-helm-exporter/tillerless-helm-release-exporter
 Install using helm 3:
 
 ```bash
-helm3 repo add bergerx-helm-exporter https://bergerx.github.io/tillerless-helm-release-exporter
-helm3 install helm-exporter bergerx-helm-exporter/tillerless-helm-release-exporter
+helm repo add bergerx-helm-exporter https://bergerx.github.io/tillerless-helm-release-exporter
+helm install helm-exporter bergerx-helm-exporter/tillerless-helm-release-exporter
+```
+
+Check [values.yaml](charts/tillerless-helm-release-exporter/values.yaml) for all helm parameters.
+
+For deploying into a cluster with prometheus operator:
+
+```bash
+helm install bergerx-helm-exporter/tillerless-helm-release-exporter --set serviceMonitor.enabled=true
 ```
 
 # Collected metrics
