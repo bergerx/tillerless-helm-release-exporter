@@ -4,8 +4,7 @@
     "@semantic-release/release-notes-generator",
     "@semantic-release/changelog",
     ["@semantic-release/exec", {
-      "prepareCmd" : "sed -i 's/^version: .*/version: ${nextRelease.version}/' charts/tillerless-helm-release-exporter/Chart.yaml",
-      "prepareCmd" : "sed -i 's/^appVersion: .*/appVersion: ${nextRelease.version}/' charts/tillerless-helm-release-exporter/Chart.yaml",
+      "prepareCmd" : "sed -i 's/^\\(version\\|appVersion\\): .*/\\1: ${nextRelease.version}/' charts/tillerless-helm-release-exporter/Chart.yaml"
     }],
     ["@semantic-release/git", {
       "assets": [ "CHANGELOG.md", "charts/tillerless-helm-release-exporter/Chart.yaml" ]
