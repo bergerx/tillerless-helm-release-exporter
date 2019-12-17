@@ -51,31 +51,43 @@ helm install bergerx-helm-exporter/tillerless-helm-release-exporter --set servic
 ```
 
 # Collected metrics
-| Metric name| Metric type | Value |
-|:---:|:---:|:---:|
-| helm_release_info | Gauge | &lt;release-version&gt; |
-
-Labels:
-* **`chart_name`**
-* **`chart_version`**
-* **`release_name`**
-* **`release_namespace`**
-* **`helm_version`** Either "v2" or "v3"
-* **`release_status`**: Uses Helm 3 status names as default. Helm 2 status names are mapped to Helm 3 statuses (e.g. "uninstalled" instead of "DELETED")
-* **`storage_driver`**: Either `ConfigMap` or `Secret`, only these two storage drivers are collected.
-* **`chart`** ("&lt;chart_name&gt;-&lt;chart_version&gt;") This is actually a redundant field but kept for convenience to write easier join queries since the `chart`/`helm.sh/chart` field has the value in this format.
+| Metric name | Metric type | Labels/tags | Value |
+| --- | --- | --- | --- |
+| helm_release_info | Gauge |• `release_namespace` <br> • `release_name` <br>  • `chart_name` <br> • `helm_version`=`v2` or `v3` <br> • `storage_driver`=`ConfigMap` or `Secret` | &lt;release-version&gt; |
+| helm_release_chart_version | Gauge | • `release_namesmace` <br> • `release_name` <br> • `chart_version` <br> • `chart` This is actually a redundant field but kept for convenience (`<chart_name>-<chart_version>`). `helm list` used to use this format. | 1 |
+| helm_release_status | Gauge | • `release_namesmace` <br> • `release_name` <br> • `release_status` Uses Helm 3 status names as default. Helm 2 status names are mapped to Helm 3 statuses (e.g. "uninstalled" instead of "DELETED") <br> | 1 |
 
 # Example metrics
 ```
-helm_release_info{chart="cert-manager-v0.9.1",chart_name="cert-manager",chart_version="v0.9.1",helm_version="v2",release_name="cert-manager",release_namespace="cert-manager",release_status="deployed",storage_driver="ConfigMap"} 16
-helm_release_info{chart="grafana-3.8.15",chart_name="grafana",chart_version="3.8.15",helm_version="v2",release_name="grafana",release_namespace="prom",release_status="deployed",storage_driver="ConfigMap"} 3
-helm_release_info{chart="heapster-1.0.1",chart_name="heapster",chart_version="1.0.1",helm_version="v2",release_name="heapster",release_namespace="kube-system",release_status="deployed",storage_driver="ConfigMap"} 30
-helm_release_info{chart="helm-exporter-0.3.1",chart_name="helm-exporter",chart_version="0.3.1",helm_version="v2",release_name="helm-exporter",release_namespace="default",release_status="uninstalled",storage_driver="ConfigMap"} 15
-helm_release_info{chart="home-assistant-0.9.7",chart_name="home-assistant",chart_version="0.9.7",helm_version="v2",release_name="home-assistant",release_namespace="home-assistant",release_status="deployed",storage_driver="ConfigMap"} 4
-helm_release_info{chart="kubernetes-dashboard-1.9.0",chart_name="kubernetes-dashboard",chart_version="1.9.0",helm_version="v2",release_name="ui",release_namespace="kube-system",release_status="deployed",storage_driver="ConfigMap"} 29
-helm_release_info{chart="memcached-3.0.0",chart_name="memcached",chart_version="3.0.0",helm_version="v3",release_name="memc",release_namespace="test",release_status="deployed",storage_driver="Secret"} 1
-helm_release_info{chart="nginx-ingress-1.22.0",chart_name="nginx-ingress",chart_version="1.22.0",helm_version="v2",release_name="ingress",release_namespace="kube-system",release_status="failed",storage_driver="ConfigMap"} 50
-helm_release_info{chart="prometheus-9.1.1",chart_name="prometheus",chart_version="9.1.1",helm_version="v2",release_name="prometheus",release_namespace="prom",release_status="deployed",storage_driver="ConfigMap"} 4
+# HELP helm_release_info Helm Release Information
+# TYPE helm_release_info gauge
+helm_release_info{chart_name="cert-manager",helm_version="v2",release_name="cert-manager",release_namespace="cert-manager",storage_driver="ConfigMap"} 4
+helm_release_info{chart_name="memcached",helm_version="v2",release_name="steely-walrus",release_namespace="test",storage_driver="ConfigMap"} 1
+helm_release_info{chart_name="memcached",helm_version="v3",release_name="memc",release_namespace="test",storage_driver="Secret"} 1
+helm_release_info{chart_name="nginx-ingress",helm_version="v2",release_name="ingress",release_namespace="kube-system",storage_driver="ConfigMap"} 4
+helm_release_info{chart_name="oauth2-proxy",helm_version="v2",release_name="auth",release_namespace="oauth2-proxy",storage_driver="ConfigMap"} 4
+helm_release_info{chart_name="prometheus-operator",helm_version="v2",release_name="prometheus-operator",release_namespace="monitoring",storage_driver="ConfigMap"} 17
+helm_release_info{chart_name="tillerless-helm-release-exporter",helm_version="v2",release_name="helm-exporter",release_namespace="monitoring",storage_driver="ConfigMap"} 2
+
+# HELP helm_release_chart_version Helm Release Chart Version
+# TYPE helm_release_chart_version gauge
+helm_release_chart_version{chart="cert-manager-v0.11.0",chart_version="v0.11.0",release_name="cert-manager",release_namespace="cert-manager"} 1
+helm_release_chart_version{chart="memcached-3.0.17",chart_version="3.0.17",release_name="memc",release_namespace="test"} 1
+helm_release_chart_version{chart="memcached-3.0.17",chart_version="3.0.17",release_name="steely-walrus",release_namespace="test"} 1
+helm_release_chart_version{chart="nginx-ingress-1.25.0",chart_version="1.25.0",release_name="ingress",release_namespace="kube-system"} 1
+helm_release_chart_version{chart="oauth2-proxy-1.2.0",chart_version="1.2.0",release_name="auth",release_namespace="oauth2-proxy"} 1
+helm_release_chart_version{chart="prometheus-operator-7.4.0",chart_version="7.4.0",release_name="prometheus-operator",release_namespace="monitoring"} 1
+helm_release_chart_version{chart="tillerless-helm-release-exporter-0.2.1",chart_version="0.2.1",release_name="helm-exporter",release_namespace="monitoring"} 1
+
+# HELP helm_release_status Helm Release Status
+# TYPE helm_release_status gauge
+helm_release_status{release_name="auth",release_namespace="oauth2-proxy",release_status="deployed"} 1
+helm_release_status{release_name="cert-manager",release_namespace="cert-manager",release_status="deployed"} 1
+helm_release_status{release_name="helm-exporter",release_namespace="monitoring",release_status="deployed"} 1
+helm_release_status{release_name="ingress",release_namespace="kube-system",release_status="deployed"} 1
+helm_release_status{release_name="memc",release_namespace="test",release_status="deployed"} 1
+helm_release_status{release_name="prometheus-operator",release_namespace="monitoring",release_status="deployed"} 1
+helm_release_status{release_name="steely-walrus",release_namespace="test",release_status="deployed"} 1
 ```
 
 # Why a new exporter

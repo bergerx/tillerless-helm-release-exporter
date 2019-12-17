@@ -24,18 +24,32 @@ import (
 var (
 	addr = flag.String("listen-address", ":8080", "The address to listen on for HTTP requests.")
 
-	stats = promauto.NewGaugeVec(prometheus.GaugeOpts{
+	releaseInfo = promauto.NewGaugeVec(prometheus.GaugeOpts{
 		Name: "helm_release_info",
-		Help: "Helm release information",
+		Help: "Helm Release Information",
 	}, []string{
+		"release_namespace",
+		"release_name",
+		"helm_version",
 		"storage_driver",
-		"chart",
 		"chart_name",
-		"chart_version",
+	})
+	releaseStatus = promauto.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "helm_release_status",
+		Help: "Helm Release Status",
+	}, []string{
 		"release_namespace",
 		"release_name",
 		"release_status",
-		"helm_version",
+	})
+	chartVersion = promauto.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "helm_release_chart_version",
+		Help: "Helm Release Chart Version",
+	}, []string{
+		"release_namespace",
+		"release_name",
+		"chart_version",
+		"chart",
 	})
 
 	statusCodeV2V3 = map[releaseV2.Status_Code]releaseV3.Status{
@@ -75,7 +89,9 @@ func redirectHandler(w http.ResponseWriter, r *http.Request) {
 func metricsHandler(w http.ResponseWriter, r *http.Request) {
 	log.Println("Handling metrics request ...")
 
-	stats.Reset()
+	releaseInfo.Reset()
+	releaseStatus.Reset()
+	chartVersion.Reset()
 
 	clientSet, err := kube.New(nil).KubernetesClientSet()
 	if err != nil {
@@ -133,8 +149,9 @@ func addDriverV2Values(wg *sync.WaitGroup, d driverv2.Driver, namespace string) 
 		v3status := statusCodeV2V3[statusCode]
 		// This field is added for convenience
 		chart := fmt.Sprintf("%s-%s", r.Chart.Metadata.Name, r.Chart.Metadata.Version)
-		stats.WithLabelValues(d.Name(), chart, r.Chart.Metadata.Name, r.Chart.Metadata.Version,
-			r.Namespace, r.Name, v3status.String(), "v2").Set(float64(r.Version))
+		releaseInfo.WithLabelValues(r.Namespace, r.Name, "v2", d.Name(), r.Chart.Metadata.Name).Set(float64(r.Version))
+		releaseStatus.WithLabelValues(r.Namespace, r.Name, v3status.String()).Set(1)
+		chartVersion.WithLabelValues(r.Namespace, r.Name, r.Chart.Metadata.Version, chart).Set(1)
 	}
 }
 
@@ -160,7 +177,8 @@ func addDriverV3Values(wg *sync.WaitGroup, d driverv3.Driver, namespace string) 
 		status := r.Info.Status
 		// This field is added for convenience
 		chart := fmt.Sprintf("%s-%s", r.Chart.Metadata.Name, r.Chart.Metadata.Version)
-		stats.WithLabelValues(d.Name(), chart, r.Chart.Metadata.Name, r.Chart.Metadata.Version,
-			r.Namespace, r.Name, status.String(), "v3").Set(float64(r.Version))
+		releaseInfo.WithLabelValues(r.Namespace, r.Name, "v3", d.Name(), r.Chart.Metadata.Name).Set(float64(r.Version))
+		releaseStatus.WithLabelValues(r.Namespace, r.Name, status.String()).Set(1)
+		chartVersion.WithLabelValues(r.Namespace, r.Name, r.Chart.Metadata.Version, chart).Set(1)
 	}
 }
