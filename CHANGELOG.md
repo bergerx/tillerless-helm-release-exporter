@@ -1,3 +1,11 @@
+## [0.2.2](https://github.com/bergerx/tillerless-helm-release-exporter/compare/v0.2.1...v0.2.2) (2019-12-17)
+
+
+### Bug Fixes
+
+* **chart:** fix inconsistenties between values and templates ([e3d4464](https://github.com/bergerx/tillerless-helm-release-exporter/commit/e3d4464fdcaa58ef3189f5eaa3f128227c6fd0d7))
+* **chart:** use service account name from values ([0a8984a](https://github.com/bergerx/tillerless-helm-release-exporter/commit/0a8984a71a91e0e82848e527f205646c15649e07))
+
 ## [0.2.1](https://github.com/bergerx/tillerless-helm-release-exporter/compare/v0.2.0...v0.2.1) (2019-10-24)
 
 
