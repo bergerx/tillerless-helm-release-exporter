@@ -11,7 +11,7 @@ require (
 	github.com/rubenv/sql-migrate v0.0.0-20191025130928-9355dd04f4b3 // indirect
 	github.com/ziutek/mymysql v1.5.4 // indirect
 	gopkg.in/gorp.v1 v1.7.2 // indirect
-	helm.sh/helm/v3 v3.0.2
+	helm.sh/helm/v3 v3.0.3
 	k8s.io/apimachinery v0.16.4
 	k8s.io/helm v2.16.1+incompatible
 	k8s.io/kubernetes v1.16.4 // indirect
