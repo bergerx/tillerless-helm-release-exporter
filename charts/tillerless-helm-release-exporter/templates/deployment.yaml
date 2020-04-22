@@ -37,14 +37,14 @@ spec:
               containerPort: 8080
               protocol: TCP
           livenessProbe:
+            periodSeconds: 1
             httpGet:
               path: /healthz
-              periodSeconds: 1
               port: 8080
           readinessProbe:
+            periodSeconds: 1
             httpGet:
               path: /healthz
-              periodSeconds: 1
               port: 8080
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
