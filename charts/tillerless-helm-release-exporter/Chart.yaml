@@ -1,8 +1,8 @@
 apiVersion: v1
 description: Helm exporter which collects information directly from storage backend without tiller.
 name: tillerless-helm-release-exporter
-version: 0.2.2
-appVersion: 0.2.2
+version: 0.2.3
+appVersion: 0.2.3
 home: https://github.com/bergerx/tillerless-helm-release-exporter
 maintainers:
 - name: bergerx

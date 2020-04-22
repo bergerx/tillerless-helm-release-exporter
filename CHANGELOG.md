@@ -1,3 +1,10 @@
+## [0.2.3](https://github.com/bergerx/tillerless-helm-release-exporter/compare/v0.2.2...v0.2.3) (2020-04-22)
+
+
+### Bug Fixes
+
+* **template:** periodSeconds was in wrong scope ([cc1fa73](https://github.com/bergerx/tillerless-helm-release-exporter/commit/cc1fa732c16ed84be54ea5bfca7e8ff57180e7cc))
+
 ## [0.2.2](https://github.com/bergerx/tillerless-helm-release-exporter/compare/v0.2.1...v0.2.2) (2019-12-17)
 
 
