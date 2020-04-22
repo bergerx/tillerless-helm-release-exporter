@@ -1,4 +1,4 @@
-> :warning: _**Warning:** This project is under development and not yet stable._
+# :warning: This project was a sandbox project which has never used. Please look at https://github.com/sstarcher/helm-exporter if you need it for helm3.
 
 # tillerless-helm-release-exporter
 Helm (both v2 and v3) exporter which collects information directly from [Release](https://helm.sh/docs/glossary/#release)'s ConfigMap or Secret storage backend without the need for a running Tiller component.
