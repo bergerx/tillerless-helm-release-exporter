@@ -2,8 +2,22 @@ apiVersion: v1
 entries:
   tillerless-helm-release-exporter:
   - apiVersion: v1
+    appVersion: 0.2.3
+    created: "2020-04-22T15:45:59.24705995Z"
+    description: Helm exporter which collects information directly from storage backend
+      without tiller.
+    digest: 0f146d53ffe52b36197b0ec460dbf4ee0c8e0ec987b13947b222508cce29c08c
+    home: https://github.com/bergerx/tillerless-helm-release-exporter
+    maintainers:
+    - name: bergerx
+      url: https://github.com/bergerx
+    name: tillerless-helm-release-exporter
+    urls:
+    - tillerless-helm-release-exporter-0.2.3.tgz
+    version: 0.2.3
+  - apiVersion: v1
     appVersion: 0.2.2
-    created: "2019-12-17T14:23:31.501861147Z"
+    created: "2020-04-22T15:45:59.246729548Z"
     description: Helm exporter which collects information directly from storage backend
       without tiller.
     digest: dab615010856d760a0d0aa37725007a6c6e2603030435d652596b483f426d7aa
@@ -16,7 +30,7 @@ entries:
     - tillerless-helm-release-exporter-0.2.2.tgz
     version: 0.2.2
   - apiVersion: v1
-    created: "2019-12-17T14:23:31.501391158Z"
+    created: "2020-04-22T15:45:59.246341391Z"
     description: Helm exporter which collects information directly from storage backend
       without tiller.
     digest: 88728d48fd97ebdff0e304a5c92616cd77581763094803a0034b403ac265b1cd
@@ -25,7 +39,7 @@ entries:
     - tillerless-helm-release-exporter-0.2.1.tgz
     version: 0.2.1
   - apiVersion: v1
-    created: "2019-12-17T14:23:31.500913853Z"
+    created: "2020-04-22T15:45:59.245671019Z"
     description: Helm exporter which collects information directly from storage backend
       without tiller.
     digest: e60774d62fd5ec83f2becf2aa1cf3ee5bf0b7051a759f65c5f4b8aee15a1ca55
@@ -34,7 +48,7 @@ entries:
     - tillerless-helm-release-exporter-0.2.0.tgz
     version: 0.2.0
   - apiVersion: v1
-    created: "2019-12-17T14:23:31.500504021Z"
+    created: "2020-04-22T15:45:59.245011641Z"
     description: Helm exporter which collects information directly from storage backend
       without tiller.
     digest: 67ad73b0fc909657a0d85cd54a26427bf0d47bffb8ccdeb28592ffe475a05ee1
@@ -42,4 +56,4 @@ entries:
     urls:
     - tillerless-helm-release-exporter-0.1.0.tgz
     version: 0.1.0
-generated: "2019-12-17T14:23:31.499890014Z"
+generated: "2020-04-22T15:45:59.244009718Z"
