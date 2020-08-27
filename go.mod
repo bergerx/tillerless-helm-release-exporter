@@ -12,7 +12,7 @@ require (
 	github.com/ziutek/mymysql v1.5.4 // indirect
 	gopkg.in/gorp.v1 v1.7.2 // indirect
 	helm.sh/helm/v3 v3.0.2
-	k8s.io/apimachinery v0.16.4
+	k8s.io/apimachinery v0.19.0
 	k8s.io/helm v2.16.1+incompatible
 	k8s.io/kubernetes v1.16.4 // indirect
 	vbom.ml/util v0.0.0-20180919145318-efcd4e0f9787 // indirect
