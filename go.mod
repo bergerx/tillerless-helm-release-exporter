@@ -3,16 +3,12 @@ module github.com/bergerx/tillerless-helm-release-exporter
 go 1.13
 
 require (
-	github.com/DATA-DOG/go-sqlmock v1.3.3 // indirect
 	github.com/gobuffalo/packr v1.30.1 // indirect
-	github.com/jmoiron/sqlx v1.2.0 // indirect
-	github.com/lib/pq v1.2.0 // indirect
 	github.com/prometheus/client_golang v1.3.0
-	github.com/rubenv/sql-migrate v0.0.0-20191025130928-9355dd04f4b3 // indirect
 	github.com/ziutek/mymysql v1.5.4 // indirect
 	gopkg.in/gorp.v1 v1.7.2 // indirect
-	helm.sh/helm/v3 v3.0.2
-	k8s.io/apimachinery v0.16.4
+	helm.sh/helm/v3 v3.6.3
+	k8s.io/apimachinery v0.21.0
 	k8s.io/helm v2.16.1+incompatible
 	k8s.io/kubernetes v1.16.4 // indirect
 	vbom.ml/util v0.0.0-20180919145318-efcd4e0f9787 // indirect
